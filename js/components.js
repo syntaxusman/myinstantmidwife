@@ -47,11 +47,11 @@
         <!-- Desktop Navigation Links -->
         <ul class="nav-links">
             <li><a href="${baseDir}index.html" class="${activePage === 'home' ? 'active' : ''}">HOME</a></li>
-            <li><a href="${pagesDir}about.html" class="${activePage === 'about' ? 'active' : ''}">WHO WE ARE</a></li>
+            <li><a href="${pagesDir}about.html" class="${activePage === 'about' ? 'active' : ''}">WHO I AM</a></li>
             <li><a href="${pagesDir}courses.html" class="${activePage === 'courses' ? 'active' : ''}">COURSES</a></li>
             <li><a href="${pagesDir}testimonials.html" class="${activePage === 'testimonials' ? 'active' : ''}">TESTIMONIALS</a></li>
             <li><a href="${pagesDir}faq.html" class="${activePage === 'faq' ? 'active' : ''}">FAQ'S</a></li>
-            <li><a href="${pagesDir}contact.html" class="${activePage === 'contact' ? 'active' : ''}">CONTACT US</a></li>
+            <li><a href="${pagesDir}contact.html" class="${activePage === 'contact' ? 'active' : ''}">CONTACT ME</a></li>
             <li><a href="${pagesDir}subscription.html" class="${activePage === 'subscription' ? 'active' : ''}">SUBSCRIPTION</a></li>
         </ul>
 
@@ -84,7 +84,7 @@
                 <h3>Have any questions?</h3>
                 <p>Get in touch to find our more about our services and how we can support you</p>
             </div>
-            <a href="${pagesDir}contact.html" class="btn-beige">CONTACT US <i class="fas fa-times"></i></a>
+            <a href="${pagesDir}contact.html" class="btn-beige">CONTACT me <i class="fas fa-times"></i></a>
         </div>
     </section>
 
@@ -106,12 +106,12 @@
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="${baseDir}index.html">Home</a></li>
-                    <li><a href="${pagesDir}about.html">Who We Are</a></li>
+                    <li><a href="${pagesDir}about.html">Who I Am</a></li>
                     <li><a href="#">Areas</a></li>
                     <li><a href="#">Blogs</a></li>
                     <li><a href="${pagesDir}testimonials.html">Testimonials</a></li>
                     <li><a href="${pagesDir}faq.html">FAQ's</a></li>
-                    <li><a href="${pagesDir}contact.html">Contact Us</a></li>
+                    <li><a href="${pagesDir}contact.html">Contact Me</a></li>
                      <li><a href="${pagesDir}subscription.html">Subscription</a></li>
                       <li><a href="${pagesDir}terms-conditions.html">Terms & Conditions</a></li>
                         <li><a href="${pagesDir}privacy-policy.html">Privacy Policy</a></li>
