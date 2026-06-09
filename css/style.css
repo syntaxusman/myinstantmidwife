@@ -2635,7 +2635,29 @@ body {
     .btn-download-light:hover i {
       transform: translateX(4px);
     }
-
+/* Price styling for both sections */
+    .course-price {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 1.2rem 0 1.5rem 0;
+        letter-spacing: 1px;
+        display: inline-block;
+    }
+    
+    /* Black section price */
+    .birthing-choices .course-price {
+        color: #D4A574;  /* Warm gold/beige */
+        border-left: 4px solid #D4A574;
+        padding-left: 1rem;
+    }
+    
+    /* White section price */
+    .birthing-choices-white .course-price {
+        color: #B8860B;  /* Dark golden */
+        border-left: 4px solid #B8860B;
+        padding-left: 1rem;
+    }
+    
     /* ========== SECTION 3 (BLACK again) - left text, right image ========== */
     
 
