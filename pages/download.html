@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="icon" type="image/png" href="../images/logo-white.png">
+    <style>
+        html, body { margin: 0; padding: 0; background: #fff; }
+    </style>
+</head>
+<body>
+<script>
+    (function () {
+        const params = new URLSearchParams(window.location.search);
+        const pdfType = params.get('pdf');
+
+        const map = {
+            biomechanics: { fileName: 'MIM-Biomechanics-in-Labour.pdf', downloadName: 'MIM_Biomechanics_in_Labour.pdf' },
+            babymoon: { fileName: 'MIM-Baby-Moon-40-Days.pdf', downloadName: 'MIM_Baby_Moon_40_Days.pdf' },
+            hypnobirthing: { fileName: 'MIM-Hypnobirthing-Course.pdf', downloadName: 'MIM_Hypnobirthing_Course.pdf' }
+        };
+
+        const meta = pdfType ? map[pdfType] : null;
+        if (!meta) return;
+
+        const link = document.createElement('a');
+        link.href = `../pdf/${meta.fileName}`;
+        link.download = meta.downloadName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    })();
+</script>
+</body>
+</html>

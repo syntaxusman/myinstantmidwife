@@ -21,6 +21,7 @@
         if (path.includes("testimonials")) return "testimonials";
         if (path.includes("faq")) return "faq";
         if (path.includes("contact")) return "contact";
+        if (path.includes("subscription")) return "subscription";
         return "home";
     }
 
@@ -49,7 +50,6 @@
             <li><a href="${baseDir}index.html" class="${activePage === 'home' ? 'active' : ''}">HOME</a></li>
             <li><a href="${pagesDir}about.html" class="${activePage === 'about' ? 'active' : ''}">WHO I AM</a></li>
             <li><a href="${pagesDir}courses.html" class="${activePage === 'courses' ? 'active' : ''}">COURSES</a></li>
-            <li><a href="${pagesDir}testimonials.html" class="${activePage === 'testimonials' ? 'active' : ''}">TESTIMONIALS</a></li>
             <li><a href="${pagesDir}faq.html" class="${activePage === 'faq' ? 'active' : ''}">FAQ'S</a></li>
             <li><a href="${pagesDir}contact.html" class="${activePage === 'contact' ? 'active' : ''}">CONTACT ME</a></li>
             <li><a href="${pagesDir}subscription.html" class="${activePage === 'subscription' ? 'active' : ''}">SUBSCRIPTION</a></li>
@@ -84,11 +84,41 @@
                 <h3>Have any questions?</h3>
                 <p>Get in touch to find our more about our services and how we can support you</p>
             </div>
-            <a href="${pagesDir}contact.html" class="btn-beige">CONTACT me <i class="fas fa-times"></i></a>
+            <a href="${pagesDir}contact.html" class="btn-beige">CONTACT me <i class="fas fa-arrow-right diag-icon"></i></a>
         </div>
     </section>
 
     
+
+    <div class="gallery">
+        <div class="gallery-track">
+            <div class="gallery-item"><img src="${baseDir}images/family.jpeg" alt="Family"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/whoiam.jpeg" alt="Midwife portrait"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/offer1.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/offer2.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/offer3.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/pkg.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/pkg2.PNG" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/course1.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/course2.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/course3.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/testimonial1.png" alt="Client"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/testimonial8.jpeg" alt="Client"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+
+            <div class="gallery-item"><img src="${baseDir}images/family.jpeg" alt="Family"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/whoiam.jpeg" alt="Midwife portrait"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/offer1.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/offer2.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/offer3.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/pkg.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/pkg2.PNG" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/course1.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/course2.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/course3.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/testimonial1.png" alt="Client"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/testimonial8.jpeg" alt="Client"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+        </div>
+    </div>
 
     <!-- ====== Main Footer ====== -->
     <footer class="contact-footer">
@@ -96,26 +126,21 @@
             <!-- Column 1: Logo & Description -->
             <div class="footer-logo-area">
                 <a href="${baseDir}index.html" class="logo">
-                    <img src="${baseDir}images/Group.png" alt="My Instant Midwife Logo">
+                    <img src="${baseDir}images/logo-white.png" alt="My Instant Midwife Logo">
                 </a>
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
             </div>
 
-            <!-- Column 2: Quick Links -->
             <div class="quick-links">
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="${baseDir}index.html">Home</a></li>
                     <li><a href="${pagesDir}about.html">Who I Am</a></li>
-                    <li><a href="#">Areas</a></li>
-                    <li><a href="#">Blogs</a></li>
-                    <li><a href="${pagesDir}testimonials.html">Testimonials</a></li>
+                    <li><a href="${pagesDir}courses.html">Courses</a></li>
                     <li><a href="${pagesDir}faq.html">FAQ's</a></li>
+                    <li><a href="${pagesDir}subscription.html">Subscription</a></li>
                     <li><a href="${pagesDir}contact.html">Contact Me</a></li>
-                     <li><a href="${pagesDir}subscription.html">Subscription</a></li>
-                      <li><a href="${pagesDir}terms-conditions.html">Terms & Conditions</a></li>
-                        <li><a href="${pagesDir}privacy-policy.html">Privacy Policy</a></li>
-
+                    
                 </ul>
             </div>
 
@@ -139,14 +164,8 @@
         <div class="copyright">
             <span>Copyright &copy; 2026. My Instant Midwife. All rights reserved.</span>
             <div class="copyright-links">
-              <a href="/pages/privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;  <a href="/pages/terms-conditions.html">Terms & Conditions</a>
+              <a href="${pagesDir}privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;  <a href="${pagesDir}terms-conditions.html">Terms & Conditions</a>
             </div>
-              
-   
-  
-       
-   
-
         </div>
     </footer>
     `;
