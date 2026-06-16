@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Courses | My Instant Midwife</title>
+    <link rel="icon" type="image/png" href="../images/logo-white.png">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Albert+Sans:wght@400;500;600;700&family=Rochester&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -22,7 +23,6 @@
         <div class="inner-hero-content">
             <h1>Courses</h1>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-            <a href="subscription.html" class="btn-outline">subscription <i class="fas fa-arrow-right diag-icon"></i></a>
         </div>
     </section>
 
@@ -48,7 +48,7 @@
     </div>
     
     <div class="bc-image">
-      <img src="/images/yoga.jpg">
+      <img src="../images/yoga.jpg">
     </div>
     
   </section>
@@ -58,7 +58,7 @@
   <!-- Order: image div first, text div second - no reverse class needed, flex row keeps image left, text right -->
   <section class="birthing-choices-white">
     <div class="bc-image-white">
-      <img src="/images/yoga2.png">
+      <img src="../images/yoga2.png">
     </div>
     <div class="bc-text-white">
 
@@ -89,10 +89,83 @@
       </button>
     </div>
     <div class="bc-image">
-      <img src="/images/yog.jpg">
+      <img src="../images/yog.jpg">
     </div>
   </section>
 </div>
+
+<div id="paymentModal" class="payment-modal-overlay" aria-hidden="true">
+    <div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
+        <button type="button" class="payment-close" aria-label="Close">×</button>
+        <h2 id="paymentModalTitle">Pay & Download</h2>
+        <p class="payment-subtitle" id="paymentSubtitle">Enter your details to continue.</p>
+
+        <div class="payment-grid">
+            <div class="payment-left">
+                <form id="paymentForm" class="contact-form payment-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="payFirstName">First Name</label>
+                            <input id="payFirstName" name="firstName" type="text" autocomplete="given-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="payLastName">Last Name</label>
+                            <input id="payLastName" name="lastName" type="text" autocomplete="family-name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payAddress">Address</label>
+                        <input id="payAddress" name="address" type="text" autocomplete="street-address" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="payCardNumber">Card Number</label>
+                            <input id="payCardNumber" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="payExpiry">Expiry</label>
+                            <input id="payExpiry" name="expiry" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="payCvc">CVC</label>
+                            <input id="payCvc" name="cvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" required>
+                        </div>
+                    </div>
+
+                    <div class="payment-error" id="paymentError" aria-live="polite"></div>
+
+                    <div class="payment-actions">
+                        <button type="submit" class="btn-download-dark payment-submit" id="paySubmitBtn">
+                            Pay & Download <i class="fas fa-arrow-right diag-icon"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="payment-right" aria-label="Course summary">
+                <div class="payment-course-card">
+                    <div class="payment-course-image-wrap">
+                        <img id="paymentCourseImage" src="../images/yoga.jpg" alt="">
+                        <div class="payment-course-body">
+                            <div class="payment-course-title" id="paymentCourseTitle">Course</div>
+                            <div class="payment-course-tagline" id="paymentCourseTagline"></div>
+                            <div class="payment-course-price" id="paymentCoursePrice">£19.99</div>
+                            <div class="payment-course-meta">
+                                Secure checkout • Instant download
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
 
    
 
@@ -112,18 +185,6 @@
                 <div class="dot"></div>
             </div>
         </section>
-
-    <!-- ====== Gallery Images Row ====== -->
-    <div class="gallery">
-    <div class="gallery-item"><img src="../images/testimonial.jpeg" alt="Gallery"></div>
-    <div class="gallery-item"><img src="../images/testimonial4.png" alt="Gallery"></div>
-    <div class="gallery-item"><img src="../images/testimonial.jpeg" alt="Gallery"></div>
-    <div class="gallery-item"><img src="../images/testimonial8.jpeg" alt="Gallery"></div>
-    <div class="gallery-item">
-        <img src="../images/testimonial.jpeg" alt="Gallery">
-    </div>
-    <div class="gallery-item"><img src="../images/testimonial8.jpeg" alt="Gallery"></div>
-</div>
 
     <!-- ====== Footer (injected by components.js) ====== -->
     <div id="footer-placeholder"></div>

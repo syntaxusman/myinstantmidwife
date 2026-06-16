@@ -30,22 +30,22 @@ const testimonialsArr = [
         location: "Biomechanics in Labour Course"
     },
     {
-        text: "\u201CI absolutely love my visits and would recommend Phillipha to anybody without hesitation. I've had pregnancy massages and more recently the post-dates treatment she offers, and every single session has been wonderful. What makes it so special is that alongside the treatments,  Phillipha takes the time to talk things through — I always leave feeling so much more confident, informed, and of course completely chilled out. I can't recommend her enough.\u201D",
+        text: "\u201CI absolutely love my visits and would recommend Tasmin to anybody without hesitation. I've had pregnancy massages and more recently the post-dates treatment she offers, and every single session has been wonderful. What makes it so special is that alongside the treatments, Tasmin takes the time to talk things through — I always leave feeling so much more confident, informed, and of course completely chilled out. I can't recommend her enough.\u201D",
         name: "Megan",
         location: "Pregnancy Massage & Post-Dates Treatment"
     },
     {
-        text: "\u201CMy postnatal massage with  Phillipha was such a wonderful experience. My breastfeeding baby was a little fussy during the session, but  Phillipha was incredibly understanding — she patiently helped me settle my little one while making sure I still had time to properly relax and enjoy the treatment. Her soothing touch and genuine attention to how I was feeling left me completely at ease, both physically and mentally. I'd highly recommend  Phillipha to any new mum looking for truly supportive postnatal care.\u201D",
+        text: "\u201CMy postnatal massage with Tasmin was such a wonderful experience. My breastfeeding baby was a little fussy during the session, but Tasmin was incredibly understanding — she patiently helped me settle my little one while making sure I still had time to properly relax and enjoy the treatment. Her soothing touch and genuine attention to how I was feeling left me completely at ease, both physically and mentally. I'd highly recommend Tasmin to any new mum looking for truly supportive postnatal care.\u201D",
         name: "Melissa",
         location: "Postnatal Massage"
     },
     {
-        text: "\u201CI've been meaning to write this review since finishing our hypnobirthing course with  Phillipha — but in the meantime I've had my gorgeous little boy, and I can honestly say that hypnobirthing truly worked for us. To cut a short labour story even shorter, I dilated fully at home and used every technique  Phillipha had taught us to get through it. I barely remember pain — just the music, the breathing, and focusing through the pressure. All down to  Phillipha. And then, as if it was meant to be, when I arrived at the hospital —  Phillipha was on duty. Her calm presence, her techniques, and her ability to refocus me when I went slightly off track meant more to me than I will ever be able to put into words. I couldn't recommend her highly enough.\u201D",
+        text: "\u201CI've been meaning to write this review since finishing our hypnobirthing course with Tasmin — but in the meantime I've had my gorgeous little boy, and I can honestly say that hypnobirthing truly worked for us. To cut a short labour story even shorter, I dilated fully at home and used every technique Tasmin had taught us to get through it. I barely remember pain — just the music, the breathing, and focusing through the pressure. All down to Tasmin. And then, as if it was meant to be, when I arrived at the hospital — Tasmin was on duty. Her calm presence, her techniques, and her ability to refocus me when I went slightly off track meant more to me than I will ever be able to put into words. I couldn't recommend her highly enough.\u201D",
         name: "Lynsay",
         location: "Hypnobirthing Course"
     },
     {
-        text: "\u201CMiM was the perfect support throughout our pregnancy journey. Due to a pre-existing medical condition, a caesarean section was the safest option for us — and while we knew it was the right decision, it naturally brought its own anxieties for both myself and my husband.  Phillipha tailored our hypnobirthing sessions entirely to our individual needs, addressing our fears around the antenatal period, the birth itself, and recovery. Over five sessions she guided us through techniques that genuinely transformed how we felt going into theatre — she even suggested we choose our own music, which made the experience feel personal and calm rather than clinical. Our hypnobirthing journey prepared us for the most wonderful birth experience, and I would wholeheartedly recommend it to any couple, whether you are planning a natural birth or a caesarean.\u201D",
+        text: "\u201CMiM was the perfect support throughout our pregnancy journey. Due to a pre-existing medical condition, a caesarean section was the safest option for us — and while we knew it was the right decision, it naturally brought its own anxieties for both myself and my husband. Tasmin tailored our hypnobirthing sessions entirely to our individual needs, addressing our fears around the antenatal period, the birth itself, and recovery. Over five sessions she guided us through techniques that genuinely transformed how we felt going into theatre — she even suggested we choose our own music, which made the experience feel personal and calm rather than clinical. Our hypnobirthing journey prepared us for the most wonderful birth experience, and I would wholeheartedly recommend it to any couple, whether you are planning a natural birth or a caesarean.\u201D",
         name: "Hayley & Husband",
         location: "Hypnobirthing Sessions"
     }
@@ -382,34 +382,160 @@ function downloadActualPDF(pdfFileName, displayName) {
     document.body.removeChild(link);
 }
 
-// Attach click handlers to download buttons
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Page loaded - setting up download buttons');
-    
-    // Select all download buttons
-    const downloadButtons = document.querySelectorAll('.btn-download-dark, .btn-download-light');
-    
-    console.log('Found buttons:', downloadButtons.length);
-    
+function getPdfMetaByType(pdfType) {
+    if (pdfType === 'biomechanics') {
+        return { pdfType, title: 'Biomechanics in Labour', tagline: 'How Your Body Moves, How Your Baby Navigates', price: '£19.99', imagePath: '../images/yoga.jpg', fileName: 'MIM-Biomechanics-in-Labour.pdf', downloadName: 'MIM_Biomechanics_in_Labour.pdf' };
+    }
+    if (pdfType === 'babymoon') {
+        return { pdfType, title: 'The Baby Moon', tagline: '40 Days of Postpartum Nourishment', price: '£19.99', imagePath: '../images/yoga2.png', fileName: 'MIM-Baby-Moon-40-Days.pdf', downloadName: 'MIM_Baby_Moon_40_Days.pdf' };
+    }
+    if (pdfType === 'hypnobirthing') {
+        return { pdfType, title: 'Hypnobirthing', tagline: 'A Complete Guid for You and Your Birth Partner', price: '£19.99', imagePath: '../images/yog.jpg', fileName: 'MIM-Hypnobirthing-Course.pdf', downloadName: 'MIM_Hypnobirthing_Course.pdf' };
+    }
+    return null;
+}
+
+function openPaymentModal(pdfMeta) {
+    const modalOverlay = document.getElementById('paymentModal');
+    const subtitleEl = document.getElementById('paymentSubtitle');
+    const courseImageEl = document.getElementById('paymentCourseImage');
+    const courseTitleEl = document.getElementById('paymentCourseTitle');
+    const courseTaglineEl = document.getElementById('paymentCourseTagline');
+    const coursePriceEl = document.getElementById('paymentCoursePrice');
+
+    if (!modalOverlay) return;
+
+    modalOverlay.classList.add('open');
+    modalOverlay.setAttribute('aria-hidden', 'false');
+    modalOverlay.dataset.pdfType = pdfMeta.pdfType;
+
+    if (subtitleEl) {
+        subtitleEl.textContent = 'Enter your details and pay to download the PDF.';
+    }
+
+    if (courseImageEl) {
+        courseImageEl.src = pdfMeta.imagePath || '';
+        courseImageEl.alt = pdfMeta.title || '';
+    }
+
+    if (courseTitleEl) {
+        courseTitleEl.textContent = pdfMeta.title || '';
+    }
+
+    if (courseTaglineEl) {
+        courseTaglineEl.textContent = pdfMeta.tagline || '';
+    }
+
+    if (coursePriceEl) {
+        coursePriceEl.textContent = pdfMeta.price || '';
+    }
+
+    const errorEl = document.getElementById('paymentError');
+    if (errorEl) errorEl.textContent = '';
+
+    const firstNameEl = document.getElementById('payFirstName');
+    if (firstNameEl) firstNameEl.focus();
+}
+
+function closePaymentModal() {
+    const modalOverlay = document.getElementById('paymentModal');
+    if (!modalOverlay) return;
+    modalOverlay.classList.remove('open');
+    modalOverlay.setAttribute('aria-hidden', 'true');
+    delete modalOverlay.dataset.pdfType;
+}
+
+function setPaymentSubmitting(isSubmitting) {
+    const submitBtn = document.getElementById('paySubmitBtn');
+    if (!submitBtn) return;
+    submitBtn.disabled = isSubmitting;
+    submitBtn.style.opacity = isSubmitting ? '0.75' : '1';
+    submitBtn.style.cursor = isSubmitting ? 'not-allowed' : 'pointer';
+}
+
+function validatePaymentForm() {
+    const firstName = document.getElementById('payFirstName');
+    const lastName = document.getElementById('payLastName');
+    const address = document.getElementById('payAddress');
+    const cardNumber = document.getElementById('payCardNumber');
+    const expiry = document.getElementById('payExpiry');
+    const cvc = document.getElementById('payCvc');
+
+    const fields = [firstName, lastName, address, cardNumber, expiry, cvc];
+    const missing = fields.some(el => !el || !String(el.value || '').trim());
+    if (missing) return 'Please fill in all fields.';
+
+    const digits = String(cardNumber.value).replace(/\D/g, '');
+    if (digits.length < 12) return 'Please enter a valid card number.';
+
+    const exp = String(expiry.value).trim();
+    if (!/^\d{2}\/\d{2}$/.test(exp)) return 'Expiry must be in MM/YY format.';
+
+    const cvcDigits = String(cvc.value).replace(/\D/g, '');
+    if (cvcDigits.length < 3) return 'Please enter a valid CVC.';
+
+    return null;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const downloadButtons = document.querySelectorAll('.btn-download-dark[data-pdf], .btn-download-light[data-pdf]');
+    const modalOverlay = document.getElementById('paymentModal');
+
     downloadButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function (e) {
             e.preventDefault();
-            
             const pdfType = this.getAttribute('data-pdf');
-            console.log('Download clicked for:', pdfType);
-            
-            // Map each button to its PDF file - EXACT NAMES USE KAR RAHE HAIN
-            if (pdfType === 'biomechanics') {
-                downloadActualPDF('MIM-Biomechanics-in-Labour.pdf', 'MIM_Biomechanics_in_Labour.pdf');
-            } 
-            else if (pdfType === 'babymoon') {
-                downloadActualPDF('MIM-Baby-Moon-40-Days.pdf', 'MIM_Baby_Moon_40_Days.pdf');
-            } 
-            else if (pdfType === 'hypnobirthing') {
-                downloadActualPDF('MIM-Hypnobirthing-Course.pdf', 'MIM_Hypnobirthing_Course.pdf');
+            const pdfMeta = getPdfMetaByType(pdfType);
+            if (!pdfMeta) return;
+
+            if (!modalOverlay) {
+                downloadActualPDF(pdfMeta.fileName, pdfMeta.downloadName);
+                return;
             }
+
+            openPaymentModal(pdfMeta);
         });
     });
+
+    if (modalOverlay) {
+        const closeBtn = modalOverlay.querySelector('.payment-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closePaymentModal);
+        }
+
+        modalOverlay.addEventListener('click', function (e) {
+            if (e.target === modalOverlay) closePaymentModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('open')) closePaymentModal();
+        });
+
+        const form = document.getElementById('paymentForm');
+        const errorEl = document.getElementById('paymentError');
+
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (errorEl) errorEl.textContent = '';
+
+                const validationError = validatePaymentForm();
+                if (validationError) {
+                    if (errorEl) errorEl.textContent = validationError;
+                    return;
+                }
+
+                const pdfType = modalOverlay.dataset.pdfType;
+                const pdfMeta = getPdfMetaByType(pdfType);
+                if (!pdfMeta) return;
+
+                setPaymentSubmitting(true);
+                setTimeout(() => {
+                    window.location.href = `download.html?pdf=${encodeURIComponent(pdfMeta.pdfType)}`;
+                }, 800);
+            });
+        }
+    }
 });
 /* ==========================================================
    7. FAQ ACCORDION
