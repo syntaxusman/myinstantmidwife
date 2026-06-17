@@ -104,10 +104,9 @@
             <div class="gallery-item"><img src="${baseDir}images/course3.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/testimonial1.png" alt="Client"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/testimonial8.jpeg" alt="Client"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
-
             <div class="gallery-item"><img src="${baseDir}images/WhatsApp Image 2026-06-16 at 9.27.53 PM.jpeg" alt="Gallery image"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/WhatsApp Image 2026-06-16 at 9.27.54 PM (1).jpeg" alt="Gallery image"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
-            <div class="gallery-item"><img src="${baseDir}images/WhatsApp Image 2026-06-16 at 9.27.54 PM.jpeg" alt="Gallery image"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/WhatsApp Image 2026-06-16 at 9.27.54 PM.JPG" alt="Gallery image"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/WhatsApp Image 2026-06-16 at 9.27.55 PM (1).jpeg" alt="Gallery image"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/WhatsApp Image 2026-06-16 at 9.27.55 PM.jpeg" alt="Gallery image"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/WhatsApp Image 2026-06-16 at 9.27.56 PM (1).jpeg" alt="Gallery image"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>

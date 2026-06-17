@@ -2046,6 +2046,7 @@ body {
     display: flex;
     gap: 30px;
     width: max-content;
+    align-items: center;
     animation: scroll-gallery 80s linear infinite;
 }
 
@@ -2067,15 +2068,18 @@ body {
     position: relative;
     width: 280px;
     height: 280px;
-    flex-shrink: 0;
+    flex: 0 0 280px; /* Do not grow, do not shrink, fixed 280px */
     border-radius: 20px;
     overflow: hidden;
+    background: #f0f0f0;
 }
 
 .gallery-item img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: 0.3s;
 }
 
