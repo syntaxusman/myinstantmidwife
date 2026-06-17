@@ -98,7 +98,7 @@
             <div class="gallery-item"><img src="${baseDir}images/offer2.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/offer3.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/pkg.png" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
-            <div class="gallery-item"><img src="${baseDir}images/pkg2.PNG" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
+            <div class="gallery-item"><img src="${baseDir}images/signature-support.jpeg" alt="Support package"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/course1.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/course2.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
             <div class="gallery-item"><img src="${baseDir}images/course3.png" alt="Course"><div class="ig-overlay"><i class="fab fa-instagram"></i></div></div>
