@@ -127,7 +127,8 @@
                 <a href="${baseDir}index.html" class="logo">
                     <img src="${baseDir}images/logo-white.png" alt="My Instant Midwife Logo">
                 </a>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+                <p>The journey to parenthood is one of the most significant of your life. You deserve support that meets you where you are, informed, consistent, and genuinely personal. With MIM, expert midwifery care is never more than a message away.</p>
+                <p>Ready to get started? Explore our subscription packages and find the right level of support for your journey.</p>
             </div>
 
             <div class="quick-links">
