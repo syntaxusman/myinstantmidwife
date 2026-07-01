@@ -401,6 +401,7 @@ let stripeCardNumber = null;
 let stripeCardExpiry = null;
 let stripeCardCvc = null;
 let paidDownloadUrl = '';
+let paidDownloadName = 'course.pdf';
 
 async function initializeStripePaymentFields() {
     if (!document.getElementById('payCardNumber') || typeof Stripe === 'undefined') return;
@@ -498,7 +499,7 @@ function setPaymentSubmitting(isSubmitting) {
     submitBtn.style.cursor = isSubmitting ? 'not-allowed' : 'pointer';
 }
 
-function showPaymentResultModal(isSuccess, message, downloadUrl) {
+function showPaymentResultModal(isSuccess, message, downloadUrl, downloadName) {
     const modalOverlay = document.getElementById('paymentResultModal');
     const titleEl = document.getElementById('paymentResultTitle');
     const messageEl = document.getElementById('paymentResultMessage');
@@ -514,6 +515,7 @@ function showPaymentResultModal(isSuccess, message, downloadUrl) {
     }
 
     paidDownloadUrl = isSuccess && downloadUrl ? downloadUrl : '';
+    paidDownloadName = isSuccess && downloadName ? downloadName : 'course.pdf';
     modalOverlay.classList.add('open');
     modalOverlay.setAttribute('aria-hidden', 'false');
 }
@@ -633,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!tokenResponse.ok) throw new Error(tokenData.error || 'Unable to prepare the download.');
 
                     closePaymentModal();
-                    showPaymentResultModal(true, 'Your payment was successful. Your PDF is ready to download.', tokenData.downloadUrl);
+                    showPaymentResultModal(true, 'Your payment was successful. Your PDF is ready to download.', tokenData.downloadUrl, tokenData.downloadName || pdfMeta.downloadName);
                     form.reset();
                     if (stripeCardNumber) stripeCardNumber.clear();
                     if (stripeCardExpiry) stripeCardExpiry.clear();
@@ -663,9 +665,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const downloadBtn = document.getElementById('downloadPaidPdfBtn');
     if (downloadBtn) {
-        downloadBtn.addEventListener('click', function (e) {
+        downloadBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
             if (!paidDownloadUrl) {
-                e.preventDefault();
+                return;
+            }
+
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.style.pointerEvents = 'none';
+            downloadBtn.style.opacity = '0.75';
+            downloadBtn.innerHTML = 'Preparing... <i class="fas fa-download"></i>';
+
+            try {
+                const response = await fetch(paidDownloadUrl);
+                if (!response.ok) throw new Error('Download link is invalid or expired.');
+
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = paidDownloadName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                showPaymentResultModal(false, error.message || 'Unable to download the PDF. Please try again.');
+            } finally {
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.style.pointerEvents = '';
+                downloadBtn.style.opacity = '';
             }
         });
     }
