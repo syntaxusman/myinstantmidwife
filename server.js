@@ -46,17 +46,51 @@ app.use(express.json());
 app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/pages', express.static(path.join(__dirname, 'pages')));
 app.use('/pdf', (req, res) => {
     res.status(403).send('PDF downloads require a successful payment.');
 });
 
-app.get(['/', '/index.html'], (req, res) => {
+const pageRoutes = {
+    '/about': 'about.html',
+    '/courses': 'courses.html',
+    '/faq': 'faq.html',
+    '/contact': 'contact.html',
+    '/subscription': 'subscription.html',
+    '/testimonials': 'testimonials.html',
+    '/privacy-policy': 'privacy-policy.html',
+    '/terms-conditions': 'terms-conditions.html'
+};
+
+app.get('/index.html', (req, res) => {
+    res.redirect(301, '/');
+});
+
+app.get('/pages/:page.html', (req, res, next) => {
+    const cleanPath = `/${req.params.page}`;
+    if (pageRoutes[cleanPath]) {
+        res.redirect(301, cleanPath);
+        return;
+    }
+    next();
+});
+
+app.get('/:page.html', (req, res, next) => {
+    const cleanPath = `/${req.params.page}`;
+    if (pageRoutes[cleanPath]) {
+        res.redirect(301, cleanPath);
+        return;
+    }
+    next();
+});
+
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/faq.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'faq.html'));
+Object.entries(pageRoutes).forEach(([route, fileName]) => {
+    app.get(route, (req, res) => {
+        res.sendFile(path.join(__dirname, 'pages', fileName));
+    });
 });
 
 function getCourseOrSendError(courseId, res) {
