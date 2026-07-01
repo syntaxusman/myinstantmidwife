@@ -122,18 +122,18 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="payCardNumber">Card Number</label>
-                            <input id="payCardNumber" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" required>
+                            <div id="payCardNumber" class="stripe-card-field"></div>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="payExpiry">Expiry</label>
-                            <input id="payExpiry" name="expiry" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" required>
+                            <div id="payExpiry" class="stripe-card-field"></div>
                         </div>
                         <div class="form-group">
                             <label for="payCvc">CVC</label>
-                            <input id="payCvc" name="cvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" required>
+                            <div id="payCvc" class="stripe-card-field"></div>
                         </div>
                     </div>
 
@@ -166,6 +166,19 @@
     </div>
 </div>
 
+<div id="paymentResultModal" class="payment-modal-overlay" aria-hidden="true">
+    <div class="payment-modal payment-result-modal" role="dialog" aria-modal="true" aria-labelledby="paymentResultTitle">
+        <button type="button" class="payment-close" aria-label="Close">x</button>
+        <h2 id="paymentResultTitle">Payment Successful</h2>
+        <p class="payment-subtitle" id="paymentResultMessage">Your payment was successful. Your PDF is ready to download.</p>
+        <div class="payment-actions">
+            <a href="#" class="btn-download-dark payment-submit" id="downloadPaidPdfBtn">
+                Download PDF <i class="fas fa-download"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
 
    
 
@@ -192,6 +205,7 @@
 </div>
 
 <!-- JavaScript -->
+<script src="https://js.stripe.com/v3/"></script>
 <script src="../js/components.js"></script>
 <script src="../js/script.js"></script>
 </body>

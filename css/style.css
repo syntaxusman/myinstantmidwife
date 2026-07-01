@@ -2806,10 +2806,18 @@ body {
     display: block;
 }
 
-.payment-modal .form-group input {
+.payment-modal .form-group input,
+.stripe-card-field {
     width: 100%;
     padding: 10px 14px;
     font-size: 15px;
+}
+
+.stripe-card-field {
+    min-height: 41px;
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+    background: #fff;
 }
 
 .payment-actions {
@@ -2847,6 +2855,18 @@ body {
 
 .payment-submit {
     white-space: nowrap;
+}
+
+.payment-result-modal {
+    max-width: 520px;
+}
+
+.payment-result-modal .payment-actions {
+    margin-top: 22px;
+}
+
+.payment-result-modal .btn-download-dark {
+    text-decoration: none;
 }
     white-space: nowrap;
 }
