@@ -103,10 +103,12 @@ app.post('/api/create-payment-intent', async (req, res) => {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: course.amount,
             currency: course.currency,
+            description: `My Instant Midwife - ${course.title} PDF`,
             automatic_payment_methods: { enabled: true },
             metadata: {
                 courseId,
-                courseTitle: course.title
+                courseTitle: course.title,
+                service: `${course.title} PDF Download`
             },
             receipt_email: customer && customer.email ? customer.email : undefined
         });
@@ -145,7 +147,10 @@ app.post('/api/create-download-token', async (req, res) => {
             expiresAt: Date.now() + tokenTtlMs
         });
 
-        res.json({ downloadUrl: `/api/download/${token}` });
+        res.json({
+            downloadUrl: `/api/download/${token}`,
+            downloadName: course.downloadName
+        });
     } catch (error) {
         res.status(500).json({ error: error.message || 'Unable to verify payment.' });
     }
