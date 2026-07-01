@@ -395,6 +395,47 @@ function getPdfMetaByType(pdfType) {
     return null;
 }
 
+let stripeInstance = null;
+let stripeElements = null;
+let stripeCardNumber = null;
+let stripeCardExpiry = null;
+let stripeCardCvc = null;
+let paidDownloadUrl = '';
+
+async function initializeStripePaymentFields() {
+    if (!document.getElementById('payCardNumber') || typeof Stripe === 'undefined') return;
+    if (stripeInstance && stripeElements && stripeCardNumber && stripeCardExpiry && stripeCardCvc) return;
+
+    const response = await fetch('/api/stripe-config');
+    const config = await response.json();
+    if (!response.ok) throw new Error(config.error || 'Stripe is not configured.');
+
+    stripeInstance = Stripe(config.publishableKey);
+    stripeElements = stripeInstance.elements();
+
+    const fieldStyle = {
+        base: {
+            color: '#111111',
+            fontFamily: '"Albert Sans", sans-serif',
+            fontSize: '15px',
+            '::placeholder': {
+                color: '#8a8a8a'
+            }
+        },
+        invalid: {
+            color: '#b00020'
+        }
+    };
+
+    stripeCardNumber = stripeElements.create('cardNumber', { style: fieldStyle, placeholder: '1234 5678 9012 3456' });
+    stripeCardExpiry = stripeElements.create('cardExpiry', { style: fieldStyle, placeholder: 'MM/YY' });
+    stripeCardCvc = stripeElements.create('cardCvc', { style: fieldStyle, placeholder: '123' });
+
+    stripeCardNumber.mount('#payCardNumber');
+    stripeCardExpiry.mount('#payExpiry');
+    stripeCardCvc.mount('#payCvc');
+}
+
 function openPaymentModal(pdfMeta) {
     const modalOverlay = document.getElementById('paymentModal');
     const subtitleEl = document.getElementById('paymentSubtitle');
@@ -435,6 +476,10 @@ function openPaymentModal(pdfMeta) {
 
     const firstNameEl = document.getElementById('payFirstName');
     if (firstNameEl) firstNameEl.focus();
+
+    initializeStripePaymentFields().catch(error => {
+        if (errorEl) errorEl.textContent = error.message || 'Stripe is not available right now.';
+    });
 }
 
 function closePaymentModal() {
@@ -453,26 +498,43 @@ function setPaymentSubmitting(isSubmitting) {
     submitBtn.style.cursor = isSubmitting ? 'not-allowed' : 'pointer';
 }
 
+function showPaymentResultModal(isSuccess, message, downloadUrl) {
+    const modalOverlay = document.getElementById('paymentResultModal');
+    const titleEl = document.getElementById('paymentResultTitle');
+    const messageEl = document.getElementById('paymentResultMessage');
+    const downloadBtn = document.getElementById('downloadPaidPdfBtn');
+
+    if (!modalOverlay) return;
+
+    if (titleEl) titleEl.textContent = isSuccess ? 'Payment Successful' : 'Payment Failed';
+    if (messageEl) messageEl.textContent = message;
+    if (downloadBtn) {
+        downloadBtn.href = downloadUrl || '#';
+        downloadBtn.style.display = isSuccess ? 'inline-flex' : 'none';
+    }
+
+    paidDownloadUrl = isSuccess && downloadUrl ? downloadUrl : '';
+    modalOverlay.classList.add('open');
+    modalOverlay.setAttribute('aria-hidden', 'false');
+}
+
+function closePaymentResultModal() {
+    const modalOverlay = document.getElementById('paymentResultModal');
+    if (!modalOverlay) return;
+    modalOverlay.classList.remove('open');
+    modalOverlay.setAttribute('aria-hidden', 'true');
+}
+
 function validatePaymentForm() {
     const firstName = document.getElementById('payFirstName');
     const lastName = document.getElementById('payLastName');
     const address = document.getElementById('payAddress');
-    const cardNumber = document.getElementById('payCardNumber');
-    const expiry = document.getElementById('payExpiry');
-    const cvc = document.getElementById('payCvc');
 
-    const fields = [firstName, lastName, address, cardNumber, expiry, cvc];
+    const fields = [firstName, lastName, address];
     const missing = fields.some(el => !el || !String(el.value || '').trim());
     if (missing) return 'Please fill in all fields.';
 
-    const digits = String(cardNumber.value).replace(/\D/g, '');
-    if (digits.length < 12) return 'Please enter a valid card number.';
-
-    const exp = String(expiry.value).trim();
-    if (!/^\d{2}\/\d{2}$/.test(exp)) return 'Expiry must be in MM/YY format.';
-
-    const cvcDigits = String(cvc.value).replace(/\D/g, '');
-    if (cvcDigits.length < 3) return 'Please enter a valid CVC.';
+    if (!stripeInstance || !stripeCardNumber) return 'Card payment is not ready yet. Please try again.';
 
     return null;
 }
@@ -515,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const errorEl = document.getElementById('paymentError');
 
         if (form) {
-            form.addEventListener('submit', function (e) {
+            form.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 if (errorEl) errorEl.textContent = '';
 
@@ -530,11 +592,82 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!pdfMeta) return;
 
                 setPaymentSubmitting(true);
-                setTimeout(() => {
-                    window.location.href = `download.html?pdf=${encodeURIComponent(pdfMeta.pdfType)}`;
-                }, 800);
+                try {
+                    const customer = {
+                        firstName: document.getElementById('payFirstName').value.trim(),
+                        lastName: document.getElementById('payLastName').value.trim(),
+                        address: document.getElementById('payAddress').value.trim()
+                    };
+
+                    const intentResponse = await fetch('/api/create-payment-intent', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ courseId: pdfMeta.pdfType, customer })
+                    });
+                    const intentData = await intentResponse.json();
+                    if (!intentResponse.ok) throw new Error(intentData.error || 'Unable to start payment.');
+
+                    const result = await stripeInstance.confirmCardPayment(intentData.clientSecret, {
+                        payment_method: {
+                            card: stripeCardNumber,
+                            billing_details: {
+                                name: `${customer.firstName} ${customer.lastName}`,
+                                address: {
+                                    line1: customer.address
+                                }
+                            }
+                        }
+                    });
+
+                    if (result.error) throw new Error(result.error.message || 'Payment failed.');
+                    if (!result.paymentIntent || result.paymentIntent.status !== 'succeeded') {
+                        throw new Error('Payment was not successful.');
+                    }
+
+                    const tokenResponse = await fetch('/api/create-download-token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ paymentIntentId: result.paymentIntent.id })
+                    });
+                    const tokenData = await tokenResponse.json();
+                    if (!tokenResponse.ok) throw new Error(tokenData.error || 'Unable to prepare the download.');
+
+                    closePaymentModal();
+                    showPaymentResultModal(true, 'Your payment was successful. Your PDF is ready to download.', tokenData.downloadUrl);
+                    form.reset();
+                    if (stripeCardNumber) stripeCardNumber.clear();
+                    if (stripeCardExpiry) stripeCardExpiry.clear();
+                    if (stripeCardCvc) stripeCardCvc.clear();
+                } catch (error) {
+                    showPaymentResultModal(false, error.message || 'Payment failed. Please try again.');
+                } finally {
+                    setPaymentSubmitting(false);
+                }
             });
         }
+    }
+
+    const resultModal = document.getElementById('paymentResultModal');
+    if (resultModal) {
+        const closeBtn = resultModal.querySelector('.payment-close');
+        if (closeBtn) closeBtn.addEventListener('click', closePaymentResultModal);
+
+        resultModal.addEventListener('click', function (e) {
+            if (e.target === resultModal) closePaymentResultModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && resultModal.classList.contains('open')) closePaymentResultModal();
+        });
+    }
+
+    const downloadBtn = document.getElementById('downloadPaidPdfBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function (e) {
+            if (!paidDownloadUrl) {
+                e.preventDefault();
+            }
+        });
     }
 });
 /* ==========================================================
