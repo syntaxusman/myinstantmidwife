@@ -53,6 +53,7 @@
         <!-- Search & Book Now CTA -->
         <div style="display: flex; align-items: center; gap: 20px;">
             <a href="#" style="color: var(--text-dark); font-size: 18px;"></a>
+            <a href="https://calendly.com/wson-tasmin/60" class="book-now-btn" target="_blank" rel="noopener noreferrer">Schedule a Call <i class="fas fa-arrow-right diag-icon"></i></a>
             <a href="/subscription" class="book-now-btn">BOOK NOW <i class="fas fa-arrow-right diag-icon"></i></a>
         </div>
 
