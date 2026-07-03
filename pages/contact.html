@@ -36,62 +36,69 @@
             <p>Have a question before subscribing, or want to chat about which package is right for you? I'd love to hear from you. Whether you're curious about MIM, navigating a tricky decision in your pregnancy, or simply want to know more before getting started, drop me a message and I'll get back to you as soon as I can.</p>
         </div>
 
-        <form class="contact-form">
+        <form class="contact-form" id="contactRequestForm">
             <!-- Name row: first + last name side by side -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>First Name *</label>
-                    <input type="text" placeholder="" required>
+                    <label for="contactFirstName">First Name *</label>
+                    <input id="contactFirstName" name="firstName" type="text" placeholder="" autocomplete="given-name" required>
                 </div>
                 <div class="form-group">
-                    <label>Last Name *</label>
-                    <input type="text" placeholder="" required>
+                    <label for="contactLastName">Last Name *</label>
+                    <input id="contactLastName" name="lastName" type="text" placeholder="" autocomplete="family-name" required>
                 </div>
             </div>
             <div class="form-group">
-                <label>Email *</label>
-                <input type="email" placeholder="" required>
+                <label for="contactEmail">Email *</label>
+                <input id="contactEmail" name="email" type="email" placeholder="" autocomplete="email" required>
             </div>
             <div class="form-group">
-                <label>Contact Number</label>
-                <input type="text" placeholder="">
+                <label for="contactPhone">Contact Number</label>
+                <input id="contactPhone" name="phone" type="text" placeholder="" autocomplete="tel">
             </div>
             <div class="form-group">
-                <label>Address Line 1 *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactAddress">Address Line 1 *</label>
+                <input id="contactAddress" name="addressLine1" type="text" placeholder="" autocomplete="address-line1" required>
             </div>
             <div class="form-group">
-                <label>Town/City *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactCity">Town/City *</label>
+                <input id="contactCity" name="city" type="text" placeholder="" autocomplete="address-level2" required>
             </div>
             <div class="form-group">
-                <label>Post Code *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactPostCode">Post Code *</label>
+                <input id="contactPostCode" name="postCode" type="text" placeholder="" autocomplete="postal-code" required>
             </div>
             <div class="form-group">
-                <label>Due Date (if known, please an estimate not 100% known) *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactDueDate">Due Date (if known, please an estimate not 100% known) *</label>
+                <input id="contactDueDate" name="dueDate" type="text" placeholder="" required>
             </div>
             <div class="form-group">
-                <label>Which service are you interested in? *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactServiceInterest">Which service are you interested in? *</label>
+                <input id="contactServiceInterest" name="serviceInterest" type="text" placeholder="" required>
             </div>
             <div class="form-group">
-                <label>Additional comments regarding the service you would like to use</label>
-                <textarea placeholder="" rows="4"></textarea>
+                <label for="contactComments">Additional comments regarding the service you would like to use</label>
+                <textarea id="contactComments" name="comments" placeholder="" rows="4"></textarea>
             </div>
             <div class="form-group">
-                <label>How would you prefer we contact you? *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactPreference">How would you prefer we contact you? *</label>
+                <input id="contactPreference" name="contactPreference" type="text" placeholder="" required>
             </div>
             <div class="form-group">
-                <label>When is the best time/s of day to contact you? *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactBestTime">When is the best time/s of day to contact you? *</label>
+                <input id="contactBestTime" name="bestTime" type="text" placeholder="" required>
             </div>
             <div class="form-group">
-                <label>How did you hear about us? *</label>
-                <input type="text" placeholder="" required>
+                <label for="contactHeardAbout">How did you hear about us? *</label>
+                <input id="contactHeardAbout" name="heardAbout" type="text" placeholder="" required>
             </div>
+
+            <label class="form-consent">
+                <input id="contactConsent" name="consent" type="checkbox" required>
+                <span>I agree for My Instant Midwife to store my details and contact me about my enquiry.</span>
+            </label>
+
+            <div class="form-status" id="contactFormStatus" aria-live="polite"></div>
 
             <button type="submit" class="btn-dark submit-btn">SUBMIT REQUEST <i class="fas fa-arrow-right diag-icon"></i></a></button>
         </form>

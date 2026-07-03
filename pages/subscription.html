@@ -49,7 +49,7 @@
                 <div class="price">£79.99<span class="price-period">/month</span></div>
                 <div class="price-note">no minimum term, cancel anytime</div>
                 <div class="expand-btn">READ MORE <i class="fas fa-chevron-down expand-icon"></i></div>
-                <a href="/contact" class="card-btn">SUBSCRIBE NOW <i class="fas fa-arrow-right diag-icon"></i></a>
+                <a href="#" class="card-btn subscription-pay-btn" data-plan="core">SUBSCRIBE NOW <i class="fas fa-arrow-right diag-icon"></i></a>
             </div>
 
             <!-- Package Card 2: MIM Signature Support -->
@@ -65,7 +65,7 @@
                 <div class="price">£149.99<span class="price-period">/month</span></div>
                 <div class="price-note">no minimum term, cancel anytime</div>
                 <div class="expand-btn">READ MORE <i class="fas fa-chevron-down expand-icon"></i></div>
-                <a href="/contact" class="card-btn">SUBSCRIBE NOW <i class="fas fa-arrow-right diag-icon"></i></a>
+                <a href="#" class="card-btn subscription-pay-btn" data-plan="signature">SUBSCRIBE NOW <i class="fas fa-arrow-right diag-icon"></i></a>
             </div>
 
             <!-- Package Card 3: MIM Sustained Support -->
@@ -82,7 +82,7 @@
                 <div class="price">£1,399 <span class="price-period">one payment</span></div>
                 <div class="price-note">10 months continuous care (equivalent to £140/month) • available from booking around 6–8 weeks of pregnancy</div>
                 <div class="expand-btn">READ MORE <i class="fas fa-chevron-down expand-icon"></i></div>
-                <a href="/contact" class="card-btn">SUBSCRIBE NOW <i class="fas fa-arrow-right diag-icon"></i></a>
+                <a href="#" class="card-btn subscription-pay-btn" data-plan="sustained">SUBSCRIBE NOW <i class="fas fa-arrow-right diag-icon"></i></a>
             </div>
         </div>
 
@@ -114,7 +114,98 @@
 
 </div>
 
+<div id="subscriptionPaymentModal" class="payment-modal-overlay" aria-hidden="true">
+    <div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="subscriptionPaymentTitle">
+        <button type="button" class="payment-close" aria-label="Close">x</button>
+        <h2 id="subscriptionPaymentTitle">Subscribe</h2>
+        <p class="payment-subtitle" id="subscriptionPaymentSubtitle">Enter your details to continue.</p>
+
+        <div class="payment-grid">
+            <div class="payment-left">
+                <form id="subscriptionPaymentForm" class="contact-form payment-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subFirstName">First Name</label>
+                            <input id="subFirstName" name="firstName" type="text" autocomplete="given-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subLastName">Last Name</label>
+                            <input id="subLastName" name="lastName" type="text" autocomplete="family-name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subEmail">Email</label>
+                        <input id="subEmail" name="email" type="email" autocomplete="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subPhone">Contact Number</label>
+                        <input id="subPhone" name="phone" type="text" autocomplete="tel">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subAddress">Address</label>
+                        <input id="subAddress" name="address" type="text" autocomplete="street-address" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subCardNumber">Card Number</label>
+                            <div id="subCardNumber" class="stripe-card-field"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subExpiry">Expiry</label>
+                            <div id="subExpiry" class="stripe-card-field"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subCvc">CVC</label>
+                            <div id="subCvc" class="stripe-card-field"></div>
+                        </div>
+                    </div>
+
+                    <div class="payment-error" id="subscriptionPaymentError" aria-live="polite"></div>
+
+                    <div class="payment-actions">
+                        <button type="submit" class="btn-download-dark payment-submit" id="subscriptionPaySubmitBtn">
+                            Pay Now <i class="fas fa-arrow-right diag-icon"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="payment-right" aria-label="Subscription summary">
+                <div class="payment-course-card">
+                    <div class="payment-course-image-wrap">
+                        <img id="subscriptionPlanImage" src="../images/offer1.png" alt="">
+                        <div class="payment-course-body">
+                            <div class="payment-course-title" id="subscriptionPlanTitle">Plan</div>
+                            <div class="payment-course-tagline" id="subscriptionPlanTagline"></div>
+                            <div class="payment-course-price" id="subscriptionPlanPrice">&pound;79.99/month</div>
+                            <div class="payment-course-meta">
+                                Secure checkout &bull; Confirmation email follows payment
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+<div id="subscriptionResultModal" class="payment-modal-overlay" aria-hidden="true">
+    <div class="payment-modal payment-result-modal" role="dialog" aria-modal="true" aria-labelledby="subscriptionResultTitle">
+        <button type="button" class="payment-close" aria-label="Close">x</button>
+        <h2 id="subscriptionResultTitle">Payment Successful</h2>
+        <p class="payment-subtitle" id="subscriptionResultMessage">Your payment was successful. You will receive a confirmation email shortly.</p>
+    </div>
+</div>
+
 <!-- JavaScript -->
+<script src="https://js.stripe.com/v3/"></script>
 <script src="../js/components.js"></script>
 <script src="../js/script.js"></script>
 </body>
