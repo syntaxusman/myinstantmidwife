@@ -758,6 +758,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             card: stripeCardNumber,
                             billing_details: {
                                 name: `${customer.firstName} ${customer.lastName}`,
+                                email: customer.email,
                                 address: {
                                     line1: customer.address
                                 }
@@ -777,12 +778,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     const tokenData = await tokenResponse.json();
                     if (!tokenResponse.ok) throw new Error(tokenData.error || 'Unable to prepare the download.');
-
-                    fetch('/api/confirm-customer-event', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ paymentIntentId: result.paymentIntent.id })
-                    }).catch(() => {});
 
                     closePaymentModal();
                     showPaymentResultModal(true, 'Your payment was successful. Your PDF is ready to download, and a confirmation email will be sent shortly.', tokenData.downloadUrl, tokenData.downloadName || pdfMeta.downloadName);
@@ -973,14 +968,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     throw new Error('Payment was not successful.');
                 }
 
-                fetch('/api/confirm-customer-event', {
+                const emailResponse = await fetch('/api/confirm-customer-event', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         paymentIntentId: data.paymentIntentId || result.paymentIntent.id,
                         subscriptionId: data.subscriptionId
                     })
-                }).catch(() => {});
+                });
+                const emailData = await emailResponse.json();
+                if (!emailResponse.ok) throw new Error(emailData.error || 'Payment succeeded, but the confirmation email could not be triggered.');
 
                 closeSubscriptionPaymentModal();
                 showSubscriptionResultModal(true, 'Your payment was successful. You will receive a confirmation email shortly.');
