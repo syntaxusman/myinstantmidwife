@@ -102,7 +102,9 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
 
         if (event.type === 'payment_intent.succeeded') {
             const paymentIntent = event.data.object;
-            await sendPaymentIntentCustomerToMailchimp(paymentIntent.metadata || {});
+            if (paymentIntent.metadata && paymentIntent.metadata.source) {
+                await sendPaymentIntentCustomerToMailchimp(paymentIntent.metadata || {});
+            }
         }
 
         res.json({ received: true });
@@ -267,6 +269,11 @@ async function upsertMailchimpMember({ email, firstName, lastName, phone, tags =
             console.error('Unable to add Mailchimp note:', error.message);
         }
     }
+
+    return {
+        email: cleanEmail,
+        tags: activeTags.map(tag => tag.name)
+    };
 }
 
 function contactNote(form) {
@@ -286,10 +293,12 @@ function contactNote(form) {
 }
 
 async function sendSubscriptionCustomerToMailchimp(metadata) {
-    if (!metadata.customerEmail) return;
+    if (!metadata.customerEmail) {
+        throw new Error('Subscription customer email is missing from Stripe metadata.');
+    }
 
     const plan = subscriptionPlans[metadata.planId];
-    await upsertMailchimpMember({
+    return upsertMailchimpMember({
         email: metadata.customerEmail,
         firstName: metadata.firstName,
         lastName: metadata.lastName,
@@ -300,7 +309,9 @@ async function sendSubscriptionCustomerToMailchimp(metadata) {
 }
 
 async function sendPaymentIntentCustomerToMailchimp(metadata) {
-    if (!metadata.customerEmail) return;
+    if (!metadata.customerEmail) {
+        throw new Error('Customer email is missing from Stripe metadata.');
+    }
 
     if (metadata.source === 'subscription') {
         await sendSubscriptionCustomerToMailchimp(metadata);
@@ -308,7 +319,7 @@ async function sendPaymentIntentCustomerToMailchimp(metadata) {
     }
 
     if (metadata.source === 'pdf') {
-        await upsertMailchimpMember({
+        return upsertMailchimpMember({
             email: metadata.customerEmail,
             firstName: metadata.firstName,
             lastName: metadata.lastName,
@@ -316,6 +327,8 @@ async function sendPaymentIntentCustomerToMailchimp(metadata) {
             note: `Source: PDF payment\nCourse: ${metadata.courseTitle || ''}`
         });
     }
+
+    throw new Error(`Unsupported customer event source: ${metadata.source || 'missing'}.`);
 }
 
 function getSubscriptionPlanOrSendError(planId, res) {
@@ -442,6 +455,16 @@ app.post('/api/create-subscription-payment', async (req, res) => {
         };
 
         if (plan.interval) {
+            const product = plan.priceId
+                ? null
+                : await stripe.products.create({
+                    name: plan.title,
+                    metadata: {
+                        planId,
+                        source: 'subscription'
+                    }
+                });
+
             const subscriptionItem = plan.priceId
                 ? { price: plan.priceId }
                 : {
@@ -449,9 +472,7 @@ app.post('/api/create-subscription-payment', async (req, res) => {
                         currency: plan.currency,
                         unit_amount: plan.amount,
                         recurring: { interval: plan.interval },
-                        product_data: {
-                            name: plan.title
-                        }
+                        product: product.id
                     }
                 };
 
@@ -509,26 +530,32 @@ app.post('/api/confirm-customer-event', async (req, res) => {
     }
 
     try {
-        if (subscriptionId) {
-            const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-            if (!['active', 'trialing', 'incomplete'].includes(subscription.status)) {
-                res.status(402).json({ error: 'Subscription payment is not confirmed yet.' });
+        if (paymentIntentId && subscriptionId) {
+            const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+            if (paymentIntent.status !== 'succeeded') {
+                res.status(402).json({ error: 'Payment was not successful.' });
                 return;
             }
-            await sendSubscriptionCustomerToMailchimp(subscription.metadata || {});
-            res.json({ message: 'Customer email journey has been triggered.' });
+
+            const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+            const mailchimp = await sendSubscriptionCustomerToMailchimp(subscription.metadata || {});
+            res.json({ message: 'Customer email journey has been triggered.', mailchimp });
             return;
         }
 
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        if (paymentIntent.status !== 'succeeded') {
-            res.status(402).json({ error: 'Payment was not successful.' });
+        if (paymentIntentId) {
+            const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+            if (paymentIntent.status !== 'succeeded') {
+                res.status(402).json({ error: 'Payment was not successful.' });
+                return;
+            }
+
+            const mailchimp = await sendPaymentIntentCustomerToMailchimp(paymentIntent.metadata || {});
+            res.json({ message: 'Customer email journey has been triggered.', mailchimp });
             return;
         }
-
-        await sendPaymentIntentCustomerToMailchimp(paymentIntent.metadata || {});
-        res.json({ message: 'Customer email journey has been triggered.' });
     } catch (error) {
+        console.error('Unable to trigger customer email:', error);
         res.status(500).json({ error: error.message || 'Unable to trigger customer email.' });
     }
 });
@@ -561,13 +588,12 @@ app.post('/api/create-download-token', async (req, res) => {
             expiresAt: Date.now() + tokenTtlMs
         });
 
-        sendPaymentIntentCustomerToMailchimp(paymentIntent.metadata || {}).catch(error => {
-            console.error('Unable to trigger PDF Mailchimp email:', error.message);
-        });
+        const mailchimp = await sendPaymentIntentCustomerToMailchimp(paymentIntent.metadata || {});
 
         res.json({
             downloadUrl: `/api/download/${token}`,
-            downloadName: course.downloadName
+            downloadName: course.downloadName,
+            mailchimp
         });
     } catch (error) {
         res.status(500).json({ error: error.message || 'Unable to verify payment.' });
