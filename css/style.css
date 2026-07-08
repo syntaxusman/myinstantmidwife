@@ -1766,6 +1766,7 @@ body {
                 margin: 0 auto;
                 position: relative;
                 top: 0;
+                order: -1;
             }
             .btn-beige {
                 margin-bottom: 20px;
@@ -1900,6 +1901,7 @@ body {
       }
       .serve-right {
         height: 500px;
+        order: -1;
       }
       .serve-right img {
         height: 100%;
@@ -2872,7 +2874,7 @@ body {
 }
 /* Price styling for both sections */
     .course-price {
-        font-size: 2rem;
+        font-size: 2.6rem;
         font-weight: 700;
         margin: 1.2rem 0 1.5rem 0;
         letter-spacing: 1px;
@@ -2931,6 +2933,29 @@ body {
       }
       .bc-text p, .bc-text-white p {
         margin-bottom: 30px;
+      }
+      .bc-image, .bc-image-white {
+        order: -1;
+      }
+      .bc-image img, .bc-image-white img {
+        height: auto;
+        max-height: 420px;
+      }
+      .course-price {
+        font-size: 2.65rem;
+        line-height: 1.1;
+        margin: 1rem 0 1.35rem 0;
+      }
+    }
+
+    @media (min-width: 851px) {
+      .birthing-choices .course-price,
+      .birthing-choices-white .course-price {
+        display: block;
+        width: fit-content;
+        font-size: 3rem;
+        line-height: 1.1;
+        margin: 0.9rem 0 1.6rem 0;
       }
     }
 
@@ -3557,8 +3582,15 @@ body {
     .serve-left,
     .serve-right {
         width: 100%;
-        height: auto;
+    }
+
+    .serve-left {
         padding: 60px 30px;
+    }
+
+    .serve-right {
+        height: 420px;
+        padding: 0;
     }
 
     /* Footer adjustments */
@@ -3693,11 +3725,14 @@ body {
     }
 
     .subscription-btn {
-        position: relative;
-        left: 0;
-        top: 0;
-        display: inline-block;
-        margin-top: 20px;
+        left: 50%;
+        top: 455px;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        width: max-content;
+        max-width: calc(100% - 40px);
+        margin-top: 0;
     }
 
     /* Who We Are Mobile */
@@ -3708,6 +3743,19 @@ body {
     .who-right p {
         font-size: 16px;
         line-height: 1.6;
+    }
+
+    .who-we-are {
+        padding-bottom: 24px;
+        gap: 22px;
+    }
+
+    .who-right {
+        flex: 0 1 auto;
+    }
+
+    .who-right p {
+        margin-bottom: 24px;
     }
 
     /* Packages Mobile */
@@ -3733,6 +3781,10 @@ body {
 
     .inner-hero h1 {
         font-size: 32px;
+    }
+
+    .inner-hero.mobile-heading-only p {
+        display: none;
     }
 
     .inner-content {
@@ -3806,6 +3858,10 @@ body {
     .book-now-btn {
         display: none;
     }
+
+    .serve-right {
+        height: 320px;
+    }
 }
 
 /* --- Small mobile (< 480px) --- */
@@ -3817,10 +3873,6 @@ body {
 
     .hero-content {
         top: 120px;
-    }
-
-    .subscription-btn {
-        top: 500px;
     }
 
     .inner-hero h1 {
