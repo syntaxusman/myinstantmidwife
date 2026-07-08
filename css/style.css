@@ -2841,9 +2841,20 @@ body {
         max-height: none;
         overflow: visible;
         padding-right: 0;
+        order: 2;
     }
     .payment-right {
         height: 300px;
+        order: 1;
+    }
+    .payment-form {
+        gap: 8px;
+    }
+    .payment-error:empty {
+        min-height: 0;
+    }
+    .payment-actions {
+        margin-top: 4px;
     }
 }
 
