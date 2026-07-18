@@ -148,9 +148,8 @@
                 <div class="follow">
                     <h4>Follow Us</h4>
                     <div class="social-icons">
-                        <a href="#" class="social-circle" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-circle" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-circle" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/share/g/1GVNyi4eY6/" class="social-circle" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/mim_myinstantmidwife?igsh=MW0wN25hdjE2aXYxZw==" class="social-circle" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>
